@@ -474,10 +474,31 @@ static int tz_get_target_freq(struct devfreq *devfreq, unsigned long *freq,
 	 * If the decision is to move to a different level, make sure the GPU
 	 * frequency changes.
 	 */
-	if (val) {
+#if 1
+	if (!adrenoboost && val) {
 		level += val;
 		level = max(level, 0);
 		level = min_t(int, level, devfreq->profile->max_state - 1);
+	} else {
+		if (val) {
+			priv->bin.cycles_keeping_level += 1 + abs(val/2); // higher value change quantity means more addition to cycles_keeping_level for easier switching
+			// going upwards in frequency -- make it harder on the low and high freqs, middle ground - let it move
+			if (val<0 && priv->bin.cycles_keeping_level < conservation_map_up[ last_level ]) {
+			} else
+			// going downwards in frequency let it happen hard in the middle freqs
+			if (val>0 && priv->bin.cycles_keeping_level < conservation_map_down[ last_level ])  {
+			} else
+			{
+				level += val;
+				level = max(level, 0);
+				level = min_t(int, level, devfreq->profile->max_state - 1);
+				// reset keep cylcles timer
+				priv->bin.cycles_keeping_level = 0;
+				// set new last level
+				priv->bin.last_level = level;
+				printk("%s ADRENO jumping level = %d last_level = %d total=%d busy=%d original busy_time=%d \n", __func__, level, priv->bin.last_level, (int)priv->bin.total_time, (int)priv->bin.busy_time, (int)stats.busy_time);
+			}
+		}
 	}
 
 	*freq = devfreq->profile->freq_table[level];
