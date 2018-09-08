@@ -616,6 +616,92 @@ static uint32_t get_core_min_freq(uint32_t cpu)
 	return min_freq;
 }
 
+static void msm_thermal_update_freq(bool is_shutdown, bool mitigate)
+{
+	uint32_t cpu;
+	bool update = false;
+
+	for_each_possible_cpu(cpu) {
+		if (msm_thermal_info.freq_mitig_control_mask
+			& BIT(cpu)) {
+			uint32_t *freq = (is_shutdown)
+				? &cpus[cpu].shutdown_max_freq
+				: &cpus[cpu].suspend_max_freq;
+			uint32_t mitigation_freq = (mitigate) ?
+				get_core_min_freq(cpu) : UINT_MAX;
+
+			if (*freq == mitigation_freq)
+				continue;
+			*freq = mitigation_freq;
+			update = true;
+			pr_debug("%s mitigate CPU%u to %u\n",
+				(is_shutdown) ? "Shutdown" : "Suspend", cpu,
+				mitigation_freq);
+		}
+	}
+
+	if (!update)
+		goto notify_exit;
+
+	if (freq_mitigation_task)
+		complete(&freq_mitigation_complete);
+	else
+		pr_err("Freq mitigation task is not initialized\n");
+notify_exit:
+	return;
+}
+
+static int msm_thermal_power_down_callback(
+		struct notifier_block *nfb, unsigned long action, void *data)
+{
+
+	switch (action) {
+	case SYS_RESTART:
+	case SYS_POWER_OFF:
+	case SYS_HALT:
+		msm_thermal_update_freq(true, true);
+		break;
+
+	default:
+		return NOTIFY_DONE;
+	}
+
+	return NOTIFY_OK;
+}
+
+static int msm_thermal_suspend_callback(
+		struct notifier_block *nfb, unsigned long action, void *data)
+{
+	switch (action) {
+	case PM_HIBERNATION_PREPARE:
+	case PM_SUSPEND_PREPARE:
+		msm_thermal_update_freq(false, true);
+		in_suspend = true;
+		retry_in_progress = false;
+		cancel_delayed_work_sync(&retry_hotplug_work);
+		break;
+
+	case PM_POST_HIBERNATION:
+	case PM_POST_SUSPEND:
+		msm_thermal_update_freq(false, false);
+		in_suspend = false;
+		if (hotplug_task)
+			complete(&hotplug_notify_complete);
+		else
+			pr_debug("Hotplug task not initialized\n");
+		break;
+
+	default:
+		return NOTIFY_DONE;
+	}
+
+	return NOTIFY_OK;
+}
+
+static struct notifier_block msm_thermal_reboot_notifier = {
+	.notifier_call = msm_thermal_power_down_callback,
+};
+
 static struct device_manager_data *find_device_by_name(const char *device_name)
 {
 	struct device_manager_data *dev_mgr = NULL;
@@ -5320,6 +5406,8 @@ int msm_thermal_init(struct msm_thermal_data *pdata)
 	if (ret)
 		pr_err("cannot register cpufreq notifier. err:%d\n", ret);
 
+	register_reboot_notifier(&msm_thermal_reboot_notifier);
+	pm_notifier(msm_thermal_suspend_callback, 0);
 	INIT_DELAYED_WORK(&retry_hotplug_work, retry_hotplug);
 	INIT_DELAYED_WORK(&check_temp_work, check_temp);
 	schedule_delayed_work(&check_temp_work, msecs_to_jiffies(10000));
@@ -7442,6 +7530,7 @@ static int msm_thermal_dev_exit(struct platform_device *inp_dev)
 	struct rail *r = NULL;
 
 	uio_unregister_device(info);
+	unregister_reboot_notifier(&msm_thermal_reboot_notifier);
 	if (msm_therm_debugfs && msm_therm_debugfs->parent)
 		debugfs_remove_recursive(msm_therm_debugfs->parent);
 	msm_thermal_ioctl_cleanup();
