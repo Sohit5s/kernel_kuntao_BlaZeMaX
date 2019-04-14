@@ -803,7 +803,7 @@ DECLARE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
 #define cpu_curr(cpu)		(cpu_rq(cpu)->curr)
 #define raw_rq()		raw_cpu_ptr(&runqueues)
 
-#if defined(CONFIG_INTELLI_PLUG) || defined(CONFIG_LAZYPLUG)
+#if defined(CONFIG_INTELLI_HOTPLUG) || defined(CONFIG_LAZYPLUG)
 struct nr_stats_s {
 	/* time-based average load */
 	u64 nr_last_stamp;
@@ -1900,7 +1900,7 @@ extern void update_idle_cpu_load(struct rq *this_rq);
 
 extern void init_task_runnable_average(struct task_struct *p);
 
-#if defined(CONFIG_INTELLI_PLUG) || defined(CONFIG_LAZYPLUG)
+#if defined(CONFIG_INTELLI_HOTPLUG) || defined(CONFIG_LAZYPLUG)
 static inline unsigned int do_avg_nr_running(struct rq *rq)
 {
 
@@ -1925,12 +1925,12 @@ static inline unsigned int do_avg_nr_running(struct rq *rq)
 
 static inline void add_nr_running(struct rq *rq, unsigned count) 
 {
-#if defined(CONFIG_INTELLI_PLUG) || defined(CONFIG_LAZYPLUG)
+#if defined(CONFIG_INTELLI_HOTPLUG) || defined(CONFIG_LAZYPLUG)
 	struct nr_stats_s *nr_stats = &per_cpu(runqueue_stats, rq->cpu);
 #endif
 	unsigned prev_nr = rq->nr_running;
 
-#if defined(CONFIG_INTELLI_PLUG) || defined(CONFIG_LAZYPLUG)
+#if defined(CONFIG_INTELLI_HOTPLUG) || defined(CONFIG_LAZYPLUG)
 	write_seqcount_begin(&nr_stats->ave_seqcnt);
 	nr_stats->ave_nr_running = do_avg_nr_running(rq);
 	nr_stats->nr_last_stamp = rq->clock_task;
@@ -1938,7 +1938,7 @@ static inline void add_nr_running(struct rq *rq, unsigned count)
 	sched_update_nr_prod(cpu_of(rq), count, true);
 	rq->nr_running = prev_nr + count;
 
-#if defined(CONFIG_INTELLI_PLUG) || defined(CONFIG_LAZYPLUG)
+#if defined(CONFIG_INTELLI_HOTPLUG) || defined(CONFIG_LAZYPLUG)
 	write_seqcount_end(&nr_stats->ave_seqcnt);
 #endif
 
@@ -1966,18 +1966,18 @@ static inline void add_nr_running(struct rq *rq, unsigned count)
 
 static inline void sub_nr_running(struct rq *rq, unsigned count)
 {
-#if defined(CONFIG_INTELLI_PLUG) || defined(CONFIG_LAZYPLUG)
+#if defined(CONFIG_INTELLI_HOTPLUG) || defined(CONFIG_LAZYPLUG)
 	struct nr_stats_s *nr_stats = &per_cpu(runqueue_stats, rq->cpu);
 #endif
 	sched_update_nr_prod(cpu_of(rq), count, false);
-#if defined(CONFIG_INTELLI_PLUG) || defined(CONFIG_LAZYPLUG)
+#if defined(CONFIG_INTELLI_HOTPLUG) || defined(CONFIG_LAZYPLUG)
 	write_seqcount_begin(&nr_stats->ave_seqcnt);
 	nr_stats->ave_nr_running = do_avg_nr_running(rq);
 	nr_stats->nr_last_stamp = rq->clock_task;
 #endif
 	rq->nr_running -= count;
 
-#if defined(CONFIG_INTELLI_PLUG) || defined(CONFIG_LAZYPLUG)
+#if defined(CONFIG_INTELLI_HOTPLUG) || defined(CONFIG_LAZYPLUG)
 	write_seqcount_end(&nr_stats->ave_seqcnt);
 #endif
 
