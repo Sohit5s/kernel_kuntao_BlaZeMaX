@@ -17,7 +17,6 @@ obj-$(CONFIG_CPU_FREQ_GOV_COMMON)	+= cpufreq_governor.o
 obj-$(CONFIG_CPU_FREQ_GOV_IMPULSE)	+= cpufreq_impulse.o
 obj-$(CONFIG_CPU_FREQ_GOV_BIOSHOCK) += cpufreq_bioshock.o
 obj-$(CONFIG_CPU_FREQ_GOV_DARKNESS) += cpufreq_darkness.o
->>>>>>> 10e4528... Add darkness, bioshock, tripndroid
 obj-$(CONFIG_CPU_BOOST)			+= cpu-boost.o
 
 obj-$(CONFIG_CPUFREQ_DT)		+= cpufreq-dt.o
