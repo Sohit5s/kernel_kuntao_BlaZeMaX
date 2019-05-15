@@ -49,7 +49,7 @@ rm -rf out
 mkdir -p out
 make clean O=out/
 make mrproper O=out/
-make lineageos_kuntao_defconfig O=out/
+make kuntao_defconfig O=out/
 make -j$(nproc --all) O=out/
 make_zip
 
