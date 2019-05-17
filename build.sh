@@ -19,7 +19,7 @@ KERNEL_DIR=$PWD
 REPACK_DIR=$KERNEL_DIR/zip
 OUT=$KERNEL_DIR/out
 ZIP_NAME="$VERSION"-"$DATE"
-VERSION="kuntao-1.0"
+VERSION="kuntao-1.5"
 DATE=$(date +%Y%m%d-%H%M)
 
 export KBUILD_BUILD_USER=Abhat27
@@ -37,7 +37,7 @@ make_zip()
 {
 		cd $REPACK_DIR
 		cp $KERNEL_DIR/out/arch/arm64/boot/Image.gz-dtb $REPACK_DIR/
-		FINAL_ZIP="wolfX_kernel-${VERSION}-${DATE}.zip"
+		FINAL_ZIP="wolfX_kernel-r1-${VERSION}-${DATE}.zip"
         zip -r9 "${FINAL_ZIP}" *
 		cp *.zip $OUT
 		rm *.zip
