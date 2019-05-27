@@ -1,4 +1,4 @@
-CONFIG_LOCALVERSION="-WolfX_kernel-1.7🔥"
+CONFIG_LOCALVERSION="-WolfX_kernel-2.0🔥"
 # CONFIG_LOCALVERSION_AUTO is not set
 # CONFIG_USELIB is not set
 CONFIG_AUDIT=y
