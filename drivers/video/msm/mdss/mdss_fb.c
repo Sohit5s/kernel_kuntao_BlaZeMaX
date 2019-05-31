@@ -58,6 +58,16 @@
 #include "mdss_mdp.h"
 #include "mdp3_ctrl.h"
 
+
+#include "mdss_livedisplay.h"
+#ifdef CONFIG_KLAPSE
+#include "klapse.h"
+#endif
+
+#ifdef CONFIG_KLAPSE
+#include <linux/klapse.h>
+#endif
+
 #ifdef CONFIG_FB_MSM_TRIPLE_BUFFER
 #define MDSS_FB_NUM 3
 #else
