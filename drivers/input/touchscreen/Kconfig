@@ -1204,8 +1204,4 @@ config SWEEP2SLEEP
         default y
         help
           Say Y here to support sweep2sleep
-
-config SCREEN_OFF_GESTURES
-	bool "screen off gestures"
-
 endif

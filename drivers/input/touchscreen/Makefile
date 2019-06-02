@@ -106,4 +106,3 @@ obj-$(CONFIG_TOUCHSCREEN_SYNAPTICS_S3320_I2C_RMI) += synaptics_s3320_redremote.o
 obj-$(CONFIG_TOUCHSCREEN_SYNAPTICS_S1302_I2C_RMI) += synaptics_driver_s1302.o
 obj-$(CONFIG_TOUCHSCREEN_SYNAPTICS_S1302_I2C_RMI) += synaptics_s1302_redremote.o
 obj-$(CONFIG_SWEEP2SLEEP)		+= sweep2sleep.o
-obj-$(CONFIG_SCREEN_OFF_GESTURES)	+= screen_off_gestures.o
