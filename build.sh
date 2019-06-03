@@ -37,7 +37,7 @@ make_zip()
 {
 		cd $REPACK_DIR
 		cp $KERNEL_DIR/out/arch/arm64/boot/Image.gz-dtb $REPACK_DIR/
-		FINAL_ZIP="wolfX_kernel-r1-${VERSION}-${DATE}.zip"
+		FINAL_ZIP="WolFx_Kernel-r1-${VERSION}-${DATE}.zip"
         zip -r9 "${FINAL_ZIP}" *
 		cp *.zip $OUT
 		rm *.zip
