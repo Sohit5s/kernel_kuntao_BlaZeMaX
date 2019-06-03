@@ -363,12 +363,12 @@
 
 &pmi_haptic {
 	qcom,play-mode = "buffer";
-	qcom,wave-play-rate-us = <7273>;
-	qcom,vmax-mv = <6000>;
-	qcom,ilim-ma = <100>;
+	qcom,wave-play-rate-us = <9000>;
+	qcom,vmax-mv = <8000>;
+	qcom,ilim-ma = <150>;
 			qcom,wave-shape = "square";
-			qcom,wave-play-rate-us = <7273>;
-			qcom,int-pwm-freq-khz = <600>;
+			qcom,wave-play-rate-us = <9000>;
+			qcom,int-pwm-freq-khz = <800>;
 			qcom,sc-deb-cycles = <8>;
 			qcom,en-brake;
 	qcom,brake-pattern = [03 02 00 00];

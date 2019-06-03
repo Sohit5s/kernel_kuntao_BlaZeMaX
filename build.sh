@@ -75,7 +75,7 @@ echo -e "${cyan} wolfX_Kernel Build completed in $(($DIFF / 60)) minute(s) and $
 
   echo -e "\n$blue#######################################################################$nc"
   cd $KERNEL_DIR/out
-  gdrive upload wolfX_kernel*.zip
+  gdrive upload WolFx_Kernel*.zip
   cd ..
   echo -e "$purple(i) Zip uploaded Sucessfully!"
   echo -e "$red#######################################################################$nc" 
