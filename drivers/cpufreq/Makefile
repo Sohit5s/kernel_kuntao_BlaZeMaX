@@ -38,6 +38,12 @@ obj-$(CONFIG_CPU_WAKE_BOOST)		+= cpu_wake_boost.o
 
 obj-$(CONFIG_CPUFREQ_DT)		+= cpufreq-dt.o
 
+# CPU Input Boost
+obj-$(CONFIG_CPU_INPUT_BOOST) += cpu_boost.o 
+ifeq ($(CONFIG_CPU_INPUT_BOOST),y) 
+cpu_boost-objs := cpu_input_boost.o
+endif
+
 ##################################################################################
 # x86 drivers.
 # Link order matters. K8 is preferred to ACPI because of firmware bugs in early
