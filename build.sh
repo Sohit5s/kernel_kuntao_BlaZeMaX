@@ -29,8 +29,8 @@ export SUBARCH=arm64
 export USE_CCACHE=1
 export CLANG_PATH=/home/Abhat27/kernel/clang-kernel-build
 export PATH=${CLANG_PATH}:${PATH}
-export CROSS_COMPILE=/home/redwolf27/kernel/aarch64-linux-android-4.9/bin/aarch64-linux-android-
-export CLANG_TCHAIN="/home/redwolf27/kernel/clang-kernel-build"
+export CROSS_COMPILE=/home/darkx27/kernel/aarch64-linux-android-4.9/bin/aarch64-linux-android-
+export CLANG_TCHAIN="/home/darkx27/kernel/clang-kernel-build"
 export KBUILD_COMPILER_STRING="$(${CLANG_TCHAIN} --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')"
 
 make_zip()
