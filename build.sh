@@ -19,7 +19,7 @@ KERNEL_DIR=$PWD
 REPACK_DIR=$KERNEL_DIR/zip
 OUT=$KERNEL_DIR/out
 ZIP_NAME="$VERSION"-"$DATE"
-VERSION="kuntao-2.5"
+VERSION="kuntao-2.7"
 DATE=$(date +%Y%m%d-%H%M)
 
 export KBUILD_BUILD_USER=Abhat27
