@@ -22,4 +22,19 @@ config ALUCARD_HOTPLUG
  	default n
  	help
  	  Generic Alucard-hotplug cpu hotplug driver for ARM SOCs
+
+config INTELLI_HOTPLUG
+	bool "Intelli hotplug driver"
+	depends on HOTPLUG_CPU
+	default n
+	help
+	  An intelligent cpu hotplug driver for
+	  Low Latency Frequency Transition capable processors.
+  
+config LAZYPLUG
+	bool "Lazyplug Conservative hotplugging for generic devices"
+	default n
+	help
+	  This enables the conservative hotplugging, lazyplug by arter97
+	  based on intelli_plug. Refer to the comments for more info.
 endmenu
