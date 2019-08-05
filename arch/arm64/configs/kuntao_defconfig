@@ -5,7 +5,7 @@
 #
 # General setup
 #
-CONFIG_LOCALVERSION="-BlaZe-MaX-3.2"
+CONFIG_LOCALVERSION="-BlaZe-MaX-3.4"
 # CONFIG_LOCALVERSION_AUTO is not set
 # CONFIG_USELIB is not set
 CONFIG_AUDIT=y
